@@ -7,9 +7,19 @@ import json
 def trace(s:str):
     print(s)
 
+class ItemData(object):
+    '''返回单件商品的信息
+    '''
+    __slots__ = (
+        "name", #商品名称
+        "price"
+    )
+    def __repr__(self):
+        return "%s: pirce %s" % (self.name, self.price)
+
 start = 0
 
-def gettao(pid:int):
+def taobao_item(pid:int):
     pid = str(pid)
     url = r'http://item.taobao.com/item.htm?spm=a217m.7288829.1997547445.4.d2BNzo&id=' + \
         str(pid)
@@ -50,15 +60,20 @@ def gettao(pid:int):
     setcount = re.search(r'sellCount":(.*?)}', scode).group(1)
     kucun = re.search(r'"icTotalQuantity":(.*?),"', scode).group(1)
     # 返回价格、评论数、评分、月销量、总库存
-    return (pid, name, price, pinglunshu, pingfen, setcount, kucun)
+    #return (pid, name, price, pinglunshu, pingfen, setcount, kucun)
+    ret = ItemData()
+    ret.name = name
+    ret.price = price
+    return ret
 
 # 测试淘宝 Demo
 
-print('商品ID、价格、评论数、评分、月销量、总库存:')
-start = now()
-print(*gettao(42311048781))
-finish = now()
-tt = finish - start
+if __name__ == "__main__":
+    print('商品ID、价格、评论数、评分、月销量、总库存:')
+    start = now()
+    print(*gettao(42311048781))
+    finish = now()
+    tt = finish - start
 
-print('本次淘宝爬虫执行时间约为：', round(tt, 2), 's\n')
+    print('本次淘宝爬虫执行时间约为：', round(tt, 2), 's\n')
 
