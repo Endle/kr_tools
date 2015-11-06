@@ -58,7 +58,7 @@ ROOT_URLCONF = 'kr_tools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +69,10 @@ TEMPLATES = [
             ],
         },
     },
+    #{
+        #'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        #'DIRS': ['template'],
+    #},
 ]
 
 WSGI_APPLICATION = 'kr_tools.wsgi.application'
