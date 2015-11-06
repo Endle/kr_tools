@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'taobao',
+    'taobao', # 准备删除
+    'mtg_price',
 )
 
 MIDDLEWARE_CLASSES = (
