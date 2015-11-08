@@ -11,21 +11,13 @@ def nameCN_to_nameEN(nameCN:str) -> str:
             'Host': "magiccards.info",
     }
 
-    driver = webdriver.Firefox()
+    driver = webdriver.PhantomJS()
     #driver.implicitly_wait(10)
     driver.get(url)
     code = driver.page_source
-    #print(driver.page_source)
     driver.close()
-    #req = urllib.request.Request(url, headers=header)
-    #response = urllib.request.urlopen(req)
-    #code = response.read()
-    #print(code)
     soup = BeautifulSoup(code)
-    ##print(soup.find_all('img', {'alt':'English'}, class_='flag2'))
-    print(soup.find_all('div'))#, id='TCGPlayerPricingContainer'))
-    ##print(soup.find_all(['br','u','b']))
-    ##print(soup.find_all(text=re.compile("语言:")))
+    print(soup.find_all('td', class_='TCGPProductName'))
 
 if __name__ == "__main__":
     nameCN_to_nameEN("塔莫耶夫")
