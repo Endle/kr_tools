@@ -8,8 +8,8 @@ def home(request):
         content = {}
         content["result"] = "Hello"
         getter = request.GET.dict()
-        if "name" in getter:
+        if getter['name']:
             content["result"] = "English name: " + getter['name']
-        if 'name_cn' in getter:
+        if getter['name_cn']:
             content['result'] += " Chinese name: " + getter['name_cn']
         return render(request, "base.html", content)

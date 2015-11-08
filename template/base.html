@@ -17,29 +17,21 @@
   <body>
     <div class="banner">
   
-<form method="GET" id="card_name_form">
-    Chinese name: <input type="text" name="name_cn"><br/>
-    English name: <input type="text" name="name"><br/>
-    <input type="submit" value="SEARCH" />
-</form><br/><br/>
-{{result}}
- 	</div>
+      <form method="GET" id="card_name_form">
+        Chinese name: <input type="text" name="name_cn"><br/>
+        English name: <input type="text" name="name"><br/>
+        <input type="submit" value="SEARCH" />  
+        <input type="button" onclick="resetForm()" value="Reset">
+      </form><br/><br/>
+    {{result}}
+    </div>
  	
-<script type="text/javascript">
-function create_post() {
-    alert("create post is working!") 
-    //console.log($('#post-text').val())
-};
-
-
-    var frm = $('#card_name_form');
-    frm.submit(function () {
-    	event.preventDefault();
-    	create_post();
-    	alert("submit");
-    });
+<script type="text/javascript" >
+function resetForm() {
+	document.getElementById("card_name_form").reset();
+	document.getElementById("card_name_form").submit();
+}
 </script>
-<div class="banner_result"></div>
 
     <div class="l-content">
       <div class="pricing-tables pure-g">
