@@ -20,26 +20,23 @@
 <form method="GET" id="card_name_form">
     Chinese name: <input type="text" name="name_cn"><br/>
     English name: <input type="text" name="name"><br/>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="SEARCH" />
 </form><br/><br/>
-{{hello}}
+{{result}}
  	</div>
  	
 <script type="text/javascript">
+function create_post() {
+    alert("create post is working!") 
+    //console.log($('#post-text').val())
+};
+
+
     var frm = $('#card_name_form');
     frm.submit(function () {
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function (data) {
-                $("#banner_result").html(data);
-            },
-            error: function(data) {
-                $("#banner_result").html("Something went wrong!");
-            }
-        });
-        return false;
+    	event.preventDefault();
+    	create_post();
+    	alert("submit");
     });
 </script>
 <div class="banner_result"></div>
