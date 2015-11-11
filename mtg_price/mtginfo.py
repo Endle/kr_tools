@@ -3,7 +3,7 @@ import urllib.request
 import urllib.parse
 from selenium import webdriver
 
-def nameCN_to_nameEN(nameCN:str) -> str:
+def _nameCN_to_nameEN_slow(nameCN:str) -> str:
     url = "http://magiccards.info/query?q=" + urllib.parse.quote(nameCN) + "&v=card&s=cname"
     header = {'GET': '',
                 'User-Agent': "Mozilla/5.0 (Windows NT 6.2; rv:29.0) Gecko/20100101 Firefox/29.0",
@@ -12,13 +12,19 @@ def nameCN_to_nameEN(nameCN:str) -> str:
     }
 
     driver = webdriver.PhantomJS()
-    #driver.implicitly_wait(10)
     driver.get(url)
     code = driver.page_source
     driver.close()
-    soup = BeautifulSoup(code)
-    print(soup.find_all('td', class_='TCGPProductName'))
+    soup = BeautifulSoup(code, "lxml")
+    product = soup.find_all('td', class_='TCGPProductName')
+    assert len(product) == 1
+    return product[0].string
+
+def nameCN_to_nameEN(nameCN:str) -> str:
+    result = _nameCN_to_nameEN_slow(nameCN)
+    return result
 
 if __name__ == "__main__":
-    nameCN_to_nameEN("塔莫耶夫")
+    result = nameCN_to_nameEN("塔莫耶夫")
+    print(result)
 
