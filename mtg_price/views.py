@@ -6,7 +6,7 @@ from mtg_price.mtginfo import nameCN_to_nameEN
 
 def solve(content):
     if 'chinese' in content:
-        content['english'] = nameCN_to_nameEN(content['chinese'])
+        content['english'] = nameCN_to_nameEN(content['chinese'].strip())
 
 def home(request):
     if request.method == 'GET':

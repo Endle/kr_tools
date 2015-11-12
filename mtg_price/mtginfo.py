@@ -4,9 +4,12 @@ import urllib.parse
 from selenium import webdriver
 from mtg_price.models import Card_EN, Card_CN
 from django.core.exceptions import ObjectDoesNotExist
+import logging
+logger = logging.getLogger(__name__)
 
 def _nameCN_to_nameEN_slow(nameCN:str) -> str:
     url = "http://magiccards.info/query?q=" + urllib.parse.quote(nameCN) + "&v=card&s=cname"
+    logger.warn("Fetching MTG Info: %s" % url)
     header = {'GET': '',
                 'User-Agent': "Mozilla/5.0 (Windows NT 6.2; rv:29.0) Gecko/20100101 Firefox/29.0",
                 'Referer': "http://magiccards.info/",
@@ -23,11 +26,13 @@ def _nameCN_to_nameEN_slow(nameCN:str) -> str:
     return product[0].string
 
 def nameCN_to_nameEN(nameCN:str) -> str:
+    logger.warn("Translate card %s" % nameCN)
     try:
         card_cn = Card_CN.objects.get(cn=nameCN)
-        print(card_cn)
         result = card_cn.en.name
+        logger.warn("Found %s in database" % result)
     except ObjectDoesNotExist:
+        logger.warn("%s not found" % nameCN)
         result = _nameCN_to_nameEN_slow(nameCN)
 
         card_en = Card_EN.objects.create(name=result)
