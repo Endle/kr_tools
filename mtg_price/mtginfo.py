@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import urllib.request
 import urllib.parse
 from selenium import webdriver
+from mtg_price.models import Card_EN, Card_CN
+from django.core.exceptions import ObjectDoesNotExist
 
 def _nameCN_to_nameEN_slow(nameCN:str) -> str:
     url = "http://magiccards.info/query?q=" + urllib.parse.quote(nameCN) + "&v=card&s=cname"
@@ -21,7 +23,15 @@ def _nameCN_to_nameEN_slow(nameCN:str) -> str:
     return product[0].string
 
 def nameCN_to_nameEN(nameCN:str) -> str:
-    result = _nameCN_to_nameEN_slow(nameCN)
+    try:
+        card_cn = Card_CN.objects.get(cn=nameCN)
+        print(card_cn)
+        result = card_cn.en.name
+    except ObjectDoesNotExist:
+        result = _nameCN_to_nameEN_slow(nameCN)
+
+        card_en = Card_EN.objects.create(name=result)
+        card_cn = Card_CN.objects.create(en=card_en,cn=nameCN)
     return result
 
 if __name__ == "__main__":
