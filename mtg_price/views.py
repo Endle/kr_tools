@@ -6,7 +6,13 @@ from mtg_price.mtginfo import nameCN_to_nameEN
 
 def solve(content):
     if 'chinese' in content:
-        content['english'] = nameCN_to_nameEN(content['chinese'].strip())
+        try:
+            content['english'] = nameCN_to_nameEN(content['chinese'].strip())
+        except ValueError:
+            content['result'] = "No such Card!"
+            return
+        content['result'] = "English name: " + content['english']
+        content['result'] += " Chinese name: " + content['chinese']
 
 def home(request):
     if request.method == 'GET':
@@ -22,6 +28,4 @@ def home(request):
             solve_flag = True
         if solve_flag:
             solve(content)
-            content["result"] = "English name: " + content['english']
-            content['result'] += " Chinese name: " + content['chinese']
         return render(request, "base.html", content)
