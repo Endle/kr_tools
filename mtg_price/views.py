@@ -1,18 +1,29 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from mtg_price.mtginfo import nameCN_to_nameEN
+import logging
+logger = logging.getLogger(__name__)
+from mtg_price.mtginfo import *
 
 # Create your views here.
 
 def solve(content):
-    if 'chinese' in content:
+    if 'chinese' in content and content['chinese'] != "":
         try:
             content['english'] = nameCN_to_nameEN(content['chinese'].strip())
         except ValueError:
-            content['result'] = "No such Card!"
+            content['result'] = "No such Card: " + content['chinese']
             return
-        content['result'] = "English name: " + content['english']
-        content['result'] += " Chinese name: " + content['chinese']
+    elif 'english' in content:
+        try:
+            content['chinese'] = nameEN_to_nameCN(content['english'].strip())
+        except ValueError:
+            content['result'] = "No such card: " + content['english']
+            return
+    else:
+        raise ValueError("Neither english nor chinese name is found")
+
+    content['result'] = "English name: " + content['english']
+    content['result'] += " Chinese name: " + content['chinese']
 
 def home(request):
     if request.method == 'GET':
@@ -27,5 +38,6 @@ def home(request):
             content["chinese"] = getter['name_cn']
             solve_flag = True
         if solve_flag:
+            logger.warn("Try to solve")
             solve(content)
         return render(request, "base.html", content)

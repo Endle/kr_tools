@@ -34,3 +34,6 @@ def nameCN_to_nameEN(nameCN:str) -> str:
         card_cn = Card_CN.objects.create(en=card_en,cn=nameCN)
     return result
 
+def nameEN_to_nameCN(nameEN:str)->str:
+    raise ValueError("还没有实现英译中")
+
