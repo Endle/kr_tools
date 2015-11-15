@@ -37,3 +37,19 @@ def nameCN_to_nameEN(nameCN:str) -> str:
 def nameEN_to_nameCN(nameEN:str)->str:
     raise ValueError("还没有实现英译中")
 
+def get_tcg_price(nameCN:str) -> str:
+    url = "http://magiccards.info/query?q=!" + urllib.parse.quote(nameCN) + "&v=card&s=cname"
+    logger.warn("Fetching MTG Info for tcg: %s" % url)
+    code = browser.fetch(url)
+    soup = BeautifulSoup(code, "lxml")
+    not_found = soup.find_all(text="没有匹配的结果")
+    if len(not_found) > 0:
+        raise ValueError("MTG Info 没有匹配的结果")
+
+    product = soup.find_all('div', id='TCGPlayerPricingContainer')
+    assert len(product) == 1
+    #ret = product[0].parent
+    ret = str(product[0])
+    logger.warn(ret)
+    ret = ret.replace("?partner=MAGCINFO", "")
+    return ret

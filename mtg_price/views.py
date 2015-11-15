@@ -24,6 +24,7 @@ def solve(content):
 
     content['result'] = "English name: " + content['english']
     content['result'] += " Chinese name: " + content['chinese']
+    content['tcgplayer'] = get_tcg_price(content['chinese'])
 
 def home(request):
     if request.method == 'GET':
