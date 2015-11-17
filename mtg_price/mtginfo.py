@@ -35,7 +35,20 @@ def nameCN_to_nameEN(nameCN:str) -> str:
     return result
 
 def nameEN_to_nameCN(nameEN:str)->str:
-    raise ValueError("还没有实现英译中")
+    logger.warn("Translate card %s" % nameEN)
+    try:
+        card_en = Card_EN.objects.get(name=nameEN)
+        card_cn = Card_CN.objects.get(en=card_en)
+        result = card_cn.cn
+        logger.warn("Found %s in Django database" % result)
+    except ObjectDoesNotExist:
+        raise ValueError("还没有实现英译中")
+        #logger.warn("%s not found in previous database" % nameCN)
+        #result = _nameCN_to_nameEN_slow(nameCN)
+
+        #card_en = Card_EN.objects.create(name=result)
+        #card_cn = Card_CN.objects.create(en=card_en,cn=nameCN)
+    return result
 
 def get_tcg_price(nameCN:str) -> str:
     url = "http://magiccards.info/query?q=!" + urllib.parse.quote(nameCN) + "&v=card&s=cname"
