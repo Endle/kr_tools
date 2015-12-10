@@ -63,6 +63,10 @@ def get_tcg_price(nameCN:str) -> str:
     assert len(product) == 1
     #ret = product[0].parent
     ret = str(product[0])
-    logger.warn(ret)
+    #logger.warn(ret)
     ret = ret.replace("?partner=MAGCINFO", "")
     return ret
+
+def get_taobao_price(nameCN:str) -> str:
+    return '''<div id="TaobaoMobilePrice">Taobao Stub</div>'''
+
