@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'taobao', # 准备删除
+    'taobao',
     'mtg_price',
 )
 
