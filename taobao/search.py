@@ -25,10 +25,10 @@ def search(name:str)->str:
     code = browser.fetch(url)
     with open("/dev/shm/page.html", 'w') as fout:
         fout.write(code)
-    return "stub html"
     soup = BeautifulSoup(code, "lxml")
-    #item_list = soup.find_all('div', class_='list')
-    #print(item_list)
+    item_list = soup.find_all('div', class_='list')
+    print(item_list)
+    return(str(item_list))
 
 
 

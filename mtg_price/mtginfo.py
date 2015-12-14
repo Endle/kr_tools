@@ -71,6 +71,5 @@ def get_taobao_price(nameCN:str) -> str:
     logger.warn("Fetching Info from taobao: %s" % nameCN)
     from taobao.search import search
     data = search(nameCN + " 万智牌")
-    logger.warn(data)
-    return '''<div id="TaobaoMobilePrice">Taobao Stub</div>'''
+    return '''<div id="TaobaoMobilePrice">''' + data + '''</div>'''
 
