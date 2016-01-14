@@ -6,6 +6,7 @@ import urllib.parse
 import browser
 import time
 from bs4 import BeautifulSoup
+from bs4 import element
 
 
 def _get_url(name:str)->str:
@@ -22,12 +23,22 @@ def _get_url(name:str)->str:
 
 def search(name:str)->str:
     url = _get_url(name)
-    code = browser.fetch(url)
-    with open("/dev/shm/page.html", 'w') as fout:
-        fout.write(code)
+    #code = browser.fetch(url)
+    #with open("/dev/shm/page.html", 'w') as fout:
+        #fout.write(code)
+    code = open("/dev/shm/page.html").read()
     soup = BeautifulSoup(code, "lxml")
     item_list = soup.find_all('div', class_='list')
-    print(item_list)
+    assert type(item_list) is element.ResultSet
+    assert len(item_list) == 1
+    #redundancy_children = item_list[0].children #class=items g-clearfix
+    #redundancy_child_list = [c for c in redundancy_children]
+    #assert len(redundancy_children) == 1
+    redundancy_child = item_list[0].div
+    print(redundancy_child)
+
+    #item_list = item_list[0].children[0] 
+    #print(item_list)
     return(str(item_list))
 
 
