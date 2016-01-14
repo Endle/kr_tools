@@ -7,6 +7,7 @@ import browser
 import time
 from bs4 import BeautifulSoup
 from bs4 import element
+from taobao.fetch import ItemData
 
 
 def _get_url(name:str)->str:
@@ -21,6 +22,16 @@ def _get_url(name:str)->str:
     ]
     return "".join(url_component)
 
+def _solve_item(bs_item) -> ItemData:
+    assert type(bs_item) is element.Tag
+    item = ItemData()
+    #col2 = bs_item.find_all("div", class="col-2")
+    #print(col2)
+    print("---------------")
+    #col3 = bs_item.fetch
+    print("=============")
+    return item
+
 def search(name:str)->str:
     url = _get_url(name)
     #code = browser.fetch(url)
@@ -31,15 +42,17 @@ def search(name:str)->str:
     item_list = soup.find_all('div', class_='list')
     assert type(item_list) is element.ResultSet
     assert len(item_list) == 1
-    #redundancy_children = item_list[0].children #class=items g-clearfix
-    #redundancy_child_list = [c for c in redundancy_children]
-    #assert len(redundancy_children) == 1
-    redundancy_child = item_list[0].div
-    print(redundancy_child)
+    redundancy_child = item_list[0].div.contents #<div class="items g-clearfix">
+    with open("/dev/shm/result.html", "w") as fout:
+        fout.write(str(redundancy_child))
 
-    #item_list = item_list[0].children[0] 
-    #print(item_list)
-    return(str(item_list))
+    item_list = [] # list of ItemData
+    for item in redundancy_child:
+        if str(item).strip() == "":
+            continue
+        item_list.append(_solve_item(item))
+    print(item_list)
+    return(str(redundancy_child))
 
 
 

@@ -12,8 +12,16 @@ class ItemData(object):
     '''
     __slots__ = (
         "name", #商品名称
-        "price"
+        "price",
+        "shipping_cost",
+        "shop_name", # 店铺名称
     )
+    def __init__(self):
+        self.name = "Stub"
+        self.price = 450.0
+        self.shipping_cost = 15.0
+        self.shop_name = "黑市商人"
+
     def __repr__(self):
         return "%s: pirce %s" % (self.name, self.price)
 
