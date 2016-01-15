@@ -52,24 +52,22 @@ def _solve_item(bs_item) -> ItemData:
             if list(i["class"]) == ["ship"]: shipping_div = i
         except KeyError:
             continue
-    shipping_price = shipping_div.string.split()[-1]
+    if shipping_div != None:
+        shipping_price = shipping_div.string.split()[-1]
+    else:
+        shipping_price = 0.0 #包邮
     item.shipping_cost = float(shipping_price)
 
     return item
 
 def search(name:str)->[ItemData]:
     url = _get_url(name)
-    #code = browser.fetch(url)
-    #with open("/dev/shm/page.html", 'w') as fout:
-        #fout.write(code)
-    code = open("/dev/shm/page.html").read()
+    code = browser.fetch(url)
     soup = BeautifulSoup(code, "lxml")
     item_list = soup.find_all('div', class_='list')
     assert type(item_list) is element.ResultSet
     assert len(item_list) == 1
     redundancy_child = item_list[0].div.contents #<div class="items g-clearfix">
-    #with open("/dev/shm/result.html", "w") as fout:
-        #fout.write(str(redundancy_child))
 
     item_list = [] # list of ItemData
     for item in redundancy_child:
