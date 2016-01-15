@@ -15,15 +15,18 @@ class ItemData(object):
         "price",
         "shipping_cost",
         "shop_name", # 店铺名称
+        "link", # 商品链接
     )
     def __init__(self):
         self.name = "Stub"
         self.price = 450.0
         self.shipping_cost = 15.0
         self.shop_name = "黑市商人"
+        self.link = "http://www.taobao.com"
 
     def __repr__(self):
-        return "%s: pirce %s" % (self.name, self.price)
+        return "%s: \npirce %f (+%f),\n%s\n" % (self.name,
+                self.price, self.shipping_cost, self.link)
 
 start = 0
 
