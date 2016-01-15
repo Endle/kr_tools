@@ -7,6 +7,8 @@ import browser
 import time
 from bs4 import BeautifulSoup
 from bs4 import element
+import logging
+logger = logging.getLogger(__name__)
 from taobao.fetch import ItemData
 
 
@@ -23,8 +25,10 @@ def _get_url(name:str)->str:
     return "".join(url_component)
 
 def _solve_item(bs_item) -> ItemData:
+    logger.warn("---------solving single Taobao item------------")
+    logger.warn(bs_item)
     assert type(bs_item) is element.Tag
-    assert list(bs_item["class"]) == ['item', 'g-clearfix']
+    assert sorted(list(bs_item["class"])) == sorted(['item', 'g-clearfix'])
     item = ItemData()
     col2 = col3 = None
     for i in bs_item.contents:
@@ -73,6 +77,8 @@ def search(name:str)->[ItemData]:
     for item in redundancy_child:
         if str(item).strip() == "":
             continue
+        if "recommend-box" in item["class"]:
+            break #根据上面的商品结果，为你推荐的相似商品。
         item_list.append(_solve_item(item))
     return(str(redundancy_child))
 
