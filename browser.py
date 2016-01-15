@@ -18,10 +18,11 @@ _locker = threading.Lock()
 def _fetch(url:str):
     logger.warn("id of webdriver %d" % id(_locker))
     logger.warn("fetching " + url)
+    code = ""
     with _locker:
         _driver.get(url)
         code = _driver.page_source
-        return code
+    return code
 
 _cache = cachetools.TTLCache(maxsize=128, ttl=3600, missing=_fetch) # 默认一小时内缓存有效
 
